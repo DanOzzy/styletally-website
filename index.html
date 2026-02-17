@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StyleTally — Your AI Style Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0e0e;
+    --cream: #f7f4ef;
+    --warm: #ede9e1;
+    --accent: #6366f1;
+    --accent-soft: #eef2ff;
+    --muted: #888680;
+    --border: rgba(0,0,0,0.08);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(247,244,239,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    background: var(--ink) !important;
+    color: var(--cream) !important;
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    transition: opacity 0.2s !important;
+  }
+
+  .nav-cta:hover { opacity: 0.75 !important; }
+
+  /* ── HERO ── */
+  #home {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 48px 80px;
+    gap: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #home::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    background: var(--accent-soft);
+    padding: 6px 14px;
+    border-radius: 100px;
+  }
+
+  .hero-label span {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(52px, 5vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+    color: var(--ink);
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 440px;
+    margin-bottom: 44px;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-store {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-store:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .btn-apple {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .btn-google {
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid var(--border);
+  }
+
+  .btn-store svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  .btn-store-text { display: flex; flex-direction: column; gap: 1px; }
+  .btn-store-text small { font-size: 10px; opacity: 0.6; font-weight: 300; }
+  .btn-store-text strong { font-size: 14px; font-weight: 500; }
+
+  /* Phone mockup */
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .phone-wrap {
+    position: relative;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-16px); }
+  }
+
+  .phone {
+    width: 260px;
+    height: 520px;
+    background: var(--ink);
+    border-radius: 40px;
+    padding: 12px;
+    box-shadow:
+      0 40px 80px rgba(0,0,0,0.25),
+      0 0 0 1px rgba(255,255,255,0.05) inset;
+    position: relative;
+    z-index: 2;
+  }
+
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 16px;
+  }
+
+  .phone-notch {
+    width: 80px; height: 20px;
+    background: var(--ink);
+    border-radius: 0 0 12px 12px;
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .phone-app-header {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: #fff;
+    font-weight: 300;
+    margin-top: 24px;
+    letter-spacing: 0.05em;
+    opacity: 0.9;
+  }
+
+  .phone-card {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 14px;
+    margin-top: 16px;
+    backdrop-filter: blur(10px);
+  }
+
+  .phone-card-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 6px;
+  }
+
+  .phone-card-title {
+    font-size: 13px;
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .phone-card-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.4;
+  }
+
+  .phone-score {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .phone-score-num {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: #fff;
+    font-weight: 300;
+  }
+
+  .phone-score-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .phone-tag {
+    background: rgba(99,102,241,0.3);
+    border: 1px solid rgba(99,102,241,0.4);
+    color: #a5b4fc;
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+  }
+
+  .phone-dots {
+    display: flex;
+    gap: 6px;
+    margin-top: auto;
+    margin-bottom: 8px;
+  }
+
+  .phone-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .phone-dot.active { background: var(--accent); }
+
+  .phone-bg-glow {
+    position: absolute;
+    bottom: -60px; right: -60px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(99,102,241,0.3), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* floating cards behind phone */
+  .float-card {
+    position: absolute;
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px 14px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  .float-card-1 {
+    top: 80px; left: -60px;
+    animation: float 5s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+
+  .float-card-2 {
+    bottom: 120px; right: -50px;
+    animation: float 7s ease-in-out infinite;
+    animation-delay: -4s;
+  }
+
+  .float-card-emoji { font-size: 18px; margin-right: 6px; }
+
+  /* ── SECTION SHARED ── */
+  section {
+    padding: 100px 48px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .section-sub {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 520px;
+  }
+
+  /* ── FEATURES ── */
+  #features {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .features-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+    margin-bottom: 80px;
+  }
+
+  .features-header .section-title { color: var(--cream); }
+  .features-header .section-label { color: #a5b4fc; }
+  .features-header .section-sub { color: rgba(247,244,239,0.5); }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .feature-card {
+    padding: 40px 32px;
+    background: var(--ink);
+    transition: background 0.3s;
+  }
+
+  .feature-card:hover { background: rgba(255,255,255,0.03); }
+
+  .feature-icon {
+    width: 44px; height: 44px;
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .feature-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 10px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: rgba(247,244,239,0.45);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ── HOW IT WORKS ── */
+  #how {
+    background: var(--warm);
+  }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 60px;
+  }
+
+  .steps { display: flex; flex-direction: column; gap: 0; }
+
+  .step {
+    display: flex;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .step:first-child { padding-top: 0; }
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--accent);
+    opacity: 0.4;
+    line-height: 1;
+    min-width: 36px;
+    transition: opacity 0.2s;
+  }
+
+  .step:hover .step-num { opacity: 1; }
+
+  .step-content {}
+
+  .step-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+
+  .step-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .how-visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .how-phone {
+    width: 220px;
+    height: 440px;
+    background: var(--ink);
+    border-radius: 36px;
+    padding: 10px;
+    box-shadow: 0 32px 64px rgba(0,0,0,0.2);
+  }
+
+  .how-screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(140deg, #1e1e2e, #2d1b69);
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 14px;
+    gap: 10px;
+  }
+
+  .ai-bubble {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px 12px 12px 4px;
+    padding: 10px 14px;
+    align-self: flex-start;
+    max-width: 90%;
+  }
+
+  .ai-bubble p {
+    font-size: 10px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.5;
+  }
+
+  .ai-bubble .ai-name {
+    font-size: 8px;
+    color: #a5b4fc;
+    font-weight: 500;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .score-ring {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(99,102,241,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 4px auto;
+    position: relative;
+  }
+
+  .score-ring::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--accent);
+    border-right-color: var(--accent);
+  }
+
+  .score-ring .score-n {
+    font-family: var(--serif);
+    font-size: 24px;
+    color: #fff;
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .score-ring .score-l {
+    font-size: 8px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    background: var(--warm);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 48px;
+  }
+
+  .stat {
+    background: var(--warm);
+    padding: 28px 24px;
+  }
+
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 40px;
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .about-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .about-img-wrap {
+    width: 320px;
+    height: 400px;
+    background: linear-gradient(135deg, var(--accent-soft), #e0e7ff);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-img-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(to top, rgba(99,102,241,0.15), transparent);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 60px 48px 40px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 32px;
+  }
+
+  .footer-brand {}
+
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .footer-tagline {
+    font-size: 13px;
+    color: rgba(247,244,239,0.4);
+    line-height: 1.6;
+    font-weight: 300;
+    max-width: 220px;
+  }
+
+  .footer-col-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(247,244,239,0.35);
+    margin-bottom: 16px;
+  }
+
+  .footer-links { list-style: none; }
+
+  .footer-links li { margin-bottom: 10px; }
+
+  .footer-links a {
+    font-size: 14px;
+    color: rgba(247,244,239,0.6);
+    text-decoration: none;
+    font-weight: 300;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--cream); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-size: 13px;
+    color: rgba(247,244,239,0.3);
+    font-weight: 300;
+  }
+
+  .footer-stores {
+    display: flex;
+    gap: 12px;
+  }
+
+  .footer-store-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 12px;
+    color: var(--cream);
+    font-weight: 400;
+    transition: background 0.2s;
+  }
+
+  .footer-store-btn:hover { background: rgba(255,255,255,0.1); }
+
+  /* ── LEGAL PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .legal-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 140px 24px 100px;
+  }
+
+  .legal-wrap h1 {
+    font-family: var(--serif);
+    font-size: 48px;
+    font-weight: 300;
+    margin-bottom: 8px;
+  }
+
+  .legal-date {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .legal-wrap h2 {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    margin: 40px 0 12px;
+  }
+
+  .legal-wrap p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #444;
+    font-weight: 300;
+    margin-bottom: 16px;
+  }
+
+  .legal-wrap ul {
+    padding-left: 20px;
+    margin-bottom: 16px;
+  }
+
+  .legal-wrap ul li {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #444;
+    font-weight: 300;
+    margin-bottom: 6px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+
+    #home {
+      grid-template-columns: 1fr;
+      padding: 100px 20px 60px;
+      text-align: center;
+    }
+
+    .hero-sub { margin: 0 auto 40px; }
+    .hero-actions { justify-content: center; }
+    .hero-visual { display: none; }
+
+    section { padding: 70px 20px; }
+
+    .features-header { grid-template-columns: 1fr; gap: 24px; }
+    .features-grid { grid-template-columns: 1fr; }
+
+    .how-grid { grid-template-columns: 1fr; }
+    .how-visual { display: none; }
+
+    .pricing-grid { grid-template-columns: 1fr; }
+
+    #about { grid-template-columns: 1fr; }
+    .about-visual { display: none; }
+
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 20px; text-align: center; }
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" onclick="showPage('home')">StyleTally</a>
+  <ul class="nav-links">
+    <li><a href="#features" onclick="showPage('home')">Features</a></li>
+    <li><a href="#how" onclick="showPage('home')">How it works</a></li>
+    <li><a href="#about" onclick="showPage('home')">About</a></li>
+    <li><a href="#" class="nav-cta" onclick="showPage('home')">Download</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  HOME PAGE                             -->
+<!-- ═══════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section id="home">
+    <div class="hero-content">
+      <div class="hero-label"><span></span>AI-Powered Style</div>
+      <h1 class="hero-title">
+        Dress with<br><em>intention,</em><br>every day.
+      </h1>
+      <p class="hero-sub">
+        StyleTally analyses your outfits, teaches fashion theory, and gives you personalised style advice — all in your pocket.
+      </p>
+      <div class="hero-actions">
+        <a href="#" class="btn-store btn-apple">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          <div class="btn-store-text">
+            <small>Download on the</small>
+            <strong>App Store</strong>
+          </div>
+        </a>
+        <a href="#" class="btn-store btn-google">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3.18 23.76c.37.2.79.24 1.19.13l11.93-11.93L13 8.67 3.18 23.76z" fill="#EA4335"/><path d="M21.3 9.65l-3.07-1.73-3.67 3.67 3.67 3.67 3.1-1.75A2.17 2.17 0 0 0 21.3 9.65z" fill="#FBBC04"/><path d="M4.37.11a2.06 2.06 0 0 0-1.19.13L13 9.67l3.3-3.3L4.37.11z" fill="#34A853"/><path d="M3.18.24A2.06 2.06 0 0 0 2 2.17v19.66a2.06 2.06 0 0 0 1.18 1.93L13.5 12 3.18.24z" fill="#4285F4"/></svg>
+          <div class="btn-store-text">
+            <small>Get it on</small>
+            <strong>Google Play</strong>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="float-card float-card-1">
+        <span class="float-card-emoji">🎨</span>Your palette is warm
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <div class="phone-bg-glow"></div>
+            <div class="phone-app-header">StyleTally</div>
+            <div class="phone-card">
+              <div class="phone-card-label">Today's Fit Check</div>
+              <div class="phone-card-title">Tailored Trousers + Roll-neck</div>
+              <div class="phone-card-sub">Office smart casual · Autumn tonal</div>
+              <div class="phone-score">
+                <div>
+                  <div class="phone-score-num">8.4</div>
+                  <div class="phone-score-label">Style Score</div>
+                </div>
+                <div class="phone-tag">Blair's Pick</div>
+              </div>
+            </div>
+            <div class="phone-card" style="margin-top:8px">
+              <div class="phone-card-label">Colour Palette</div>
+              <div style="display:flex;gap:6px;margin-top:6px">
+                <div style="width:28px;height:28px;border-radius:50%;background:#2c3e50"></div>
+                <div style="width:28px;height:28px;border-radius:50%;background:#8b7355"></div>
+                <div style="width:28px;height:28px;border-radius:50%;background:#d4c5a9"></div>
+                <div style="width:28px;height:28px;border-radius:50%;background:#f5f0e8"></div>
+              </div>
+            </div>
+            <div class="phone-dots">
+              <div class="phone-dot active"></div>
+              <div class="phone-dot"></div>
+              <div class="phone-dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="float-card float-card-2">
+        <span class="float-card-emoji">👔</span>Outfit score: 8.4
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="features-header fade-in">
+      <div>
+        <div class="section-label">What StyleTally does</div>
+        <h2 class="section-title" style="color:var(--cream)">
+          Style intelligence,<br>built for you.
+        </h2>
+      </div>
+      <p class="section-sub">
+        From AI outfit analysis to daily style education — everything you need to dress with confidence and intention.
+      </p>
+    </div>
+    <div class="features-grid fade-in">
+      <div class="feature-card">
+        <div class="feature-icon">👔</div>
+        <div class="feature-title">Outfit Analysis</div>
+        <p class="feature-desc">Upload your outfit and get a detailed style score with personalised feedback from your chosen AI personality.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <div class="feature-title">Colour Analysis</div>
+        <p class="feature-desc">Discover your personal colour palette and learn which shades work best for your skin tone and wardrobe.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌈</div>
+        <div class="feature-title">Colour Wheel</div>
+        <p class="feature-desc">Explore complementary, triadic, analogous and split-complementary colour combinations for any outfit.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🃏</div>
+        <div class="feature-title">Daily Flashcards</div>
+        <p class="feature-desc">Learn fashion theory through beautiful daily cards — from outfit pairings to style rules, one scene at a time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✨</div>
+        <div class="feature-title">AI Personalities</div>
+        <p class="feature-desc">Choose your style advisor — Blair, Hana, Bailey, Prada, Rex, Charlie or Vogue. Each with a unique point of view.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <div class="feature-title">Fashion Rules</div>
+        <p class="feature-desc">Master the fundamentals — the two-out-of-three rule, proportion theory, colour blocking and more.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="section-label fade-in">How it works</div>
+    <h2 class="section-title fade-in">Simple. Smart.<br>Stylish.</h2>
+    <div class="how-grid">
+      <div class="steps fade-in">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <div class="step-title">Download and set up your profile</div>
+            <p class="step-desc">Choose your style category and pick an AI personality that matches your vibe.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <div class="step-title">Browse your daily style cards</div>
+            <p class="step-desc">New outfit pairings and fashion rules cards delivered every day — rotating through scenes from casual to black tie.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <div class="step-title">Analyse your outfit or colours</div>
+            <p class="step-desc">Upload a photo and get instant personalised feedback, a style score and suggestions from your AI advisor.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <div class="step-title">Dress with confidence</div>
+            <p class="step-desc">Build your style knowledge over time and start getting dressed with intention every single day.</p>
+          </div>
+        </div>
+      </div>
+      <div class="how-visual fade-in">
+        <div class="how-phone">
+          <div class="how-screen">
+            <div class="ai-bubble">
+              <div class="ai-name">Blair ·  AI Style Advisor</div>
+              <p>That roll-neck under the blazer? Elevated. The proportion here is doing everything right — structured top, wide leg below. This is the formula.</p>
+            </div>
+            <div class="score-ring">
+              <div class="score-n">8.4</div>
+              <div class="score-l">Score</div>
+            </div>
+            <div class="ai-bubble" style="align-self:flex-end; border-radius:12px 12px 4px 12px; background:rgba(99,102,241,0.2)">
+              <p style="color:rgba(255,255,255,0.7)">What would make it a 10?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="fade-in">
+      <div class="section-label">About StyleTally</div>
+      <h2 class="section-title">Built for people<br>who care about<br>how they dress.</h2>
+      <p class="section-sub">
+        StyleTally started with a simple idea — that everyone deserves a personal style advisor. We built it to make fashion education accessible, personalised and actually useful in your daily life.
+      </p>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-num">7</div>
+          <div class="stat-label">AI personalities</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">15+</div>
+          <div class="stat-label">Style scenes</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Fashion rules</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Style potential</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual fade-in">
+      <div class="about-img-wrap">👗</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="footer-logo">StyleTally</span>
+        <p class="footer-tagline">Your AI-powered personal style companion. Dress with intention, every day.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">App</div>
+        <ul class="footer-links">
+          <li><a href="#features" onclick="showPage('home')">Features</a></li>
+          <li><a href="#how" onclick="showPage('home')">How it works</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#about" onclick="showPage('home')">About</a></li>
+          <li><a href="mailto:support@style-tally.com">Contact</a></li>
+          <li><a href="mailto:support@style-tally.com">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <ul class="footer-links">
+          <li><a href="#" onclick="showPage('privacy')">Privacy Policy</a></li>
+          <li><a href="#" onclick="showPage('terms')">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 StyleTally. All rights reserved.</div>
+      <div class="footer-stores">
+        <a href="#" class="footer-store-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          App Store
+        </a>
+        <a href="#" class="footer-store-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3.18 23.76c.37.2.79.24 1.19.13l11.93-11.93L13 8.67 3.18 23.76z" fill="#EA4335"/><path d="M21.3 9.65l-3.07-1.73-3.67 3.67 3.67 3.67 3.1-1.75A2.17 2.17 0 0 0 21.3 9.65z" fill="#FBBC04"/><path d="M4.37.11a2.06 2.06 0 0 0-1.19.13L13 9.67l3.3-3.3L4.37.11z" fill="#34A853"/><path d="M3.18.24A2.06 2.06 0 0 0 2 2.17v19.66a2.06 2.06 0 0 0 1.18 1.93L13.5 12 3.18.24z" fill="#4285F4"/></svg>
+          Google Play
+        </a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  PRIVACY POLICY PAGE                   -->
+<!-- ═══════════════════════════════════════ -->
+<div id="page-privacy" class="page">
+  <div class="legal-wrap">
+    <h1>Privacy Policy</h1>
+    <div class="legal-date">Last updated: January 2025</div>
+
+    <p>StyleTally ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use and protect your information when you use the StyleTally mobile application.</p>
+
+    <h2>1. Information We Collect</h2>
+    <p>We collect the following types of information:</p>
+    <ul>
+      <li><strong>Account information:</strong> When you sign in with Google or Apple, we receive your name and email address.</li>
+      <li><strong>Profile data:</strong> Style preferences, gender category, AI personality selection, and notification settings you provide within the app.</li>
+      <li><strong>Usage data:</strong> How often you use features such as outfit analysis and colour analysis, to enforce free tier limits and improve the app.</li>
+      <li><strong>Images:</strong> Photos you upload for outfit or colour analysis. These are processed to generate style feedback and are not stored permanently.</li>
+      <li><strong>Device data:</strong> Device type, operating system version, and push notification tokens for delivering daily reminders.</li>
+      <li><strong>Purchase data:</strong> Subscription status managed via Apple In-App Purchases and RevenueCat. We do not store your payment card details.</li>
+    </ul>
+
+    <h2>2. How We Use Your Information</h2>
+    <ul>
+      <li>To provide and personalise the StyleTally experience</li>
+      <li>To deliver daily outfit inspiration and style education cards</li>
+      <li>To process outfit and colour analysis requests</li>
+      <li>To manage your subscription and enforce free tier usage limits</li>
+      <li>To send optional daily reminder notifications (only if you enable them)</li>
+      <li>To improve app performance and fix bugs</li>
+    </ul>
+
+    <h2>3. Third-Party Services</h2>
+    <p>We use the following third-party services that may process your data:</p>
+    <ul>
+      <li><strong>Supabase:</strong> Our backend database and authentication provider. Data is stored securely on Supabase infrastructure.</li>
+      <li><strong>RevenueCat:</strong> Manages subscription purchases and entitlements. RevenueCat processes your Apple ID purchase history to determine your subscription status.</li>
+      <li><strong>Google Sign-In / Apple Sign-In:</strong> Used for authentication. We only receive your name and email.</li>
+      <li><strong>OpenAI - Anthropic / AI providers:</strong> Outfit and colour analysis is powered by AI. Images you submit are sent to our AI provider for processing.</li>
+    </ul>
+
+    <h2>4. Data Storage and Security</h2>
+    <p>Your data is stored on secure servers provided by Supabase. We use industry-standard encryption for data in transit and at rest. We retain your data for as long as your account is active. You can request deletion of your account and all associated data at any time from within the app.</p>
+
+    <h2>5. Anonymous Users</h2>
+    <p>You may use StyleTally without creating an account. In this case, an anonymous session is created locally on your device. This anonymous session is not linked to any personal information unless you choose to sign in.</p>
+
+    <h2>6. Children's Privacy</h2>
+    <p>StyleTally is not intended for users under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided us with personal information, please contact us immediately.</p>
+
+    <h2>7. Your Rights</h2>
+    <p>Depending on your location, you may have the right to:</p>
+    <ul>
+      <li>Access the personal data we hold about you</li>
+      <li>Request correction of inaccurate data</li>
+      <li>Request deletion of your data</li>
+      <li>Withdraw consent at any time</li>
+      <li>Lodge a complaint with your local data protection authority</li>
+    </ul>
+    <p>To exercise any of these rights, contact us at <a href="mailto:privacy@style-tally.com" style="color:var(--accent)">privacy@style-tally.com</a>.</p>
+
+    <h2>8. Cookies and Tracking</h2>
+    <p>The StyleTally mobile app does not use cookies. Our website may use minimal analytics to understand visitor traffic. We do not use tracking for advertising purposes.</p>
+
+    <h2>9. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. We will notify you of significant changes by updating the date at the top of this page. Continued use of StyleTally after changes constitutes your acceptance of the updated policy.</p>
+
+    <h2>10. California Residents (CCPA/CPRA)</h2>
+    <p>If you are a California resident, you have additional rights under the California Consumer Privacy Act (CCPA) and California Privacy Rights Act (CPRA):</p>
+    <ul>
+      <li><strong>Right to Know:</strong> You can request information about the categories and specific pieces of personal information we have collected about you.</li>
+      <li><strong>Right to Delete:</strong> You can request deletion of your personal information, subject to certain exceptions.</li>
+      <li><strong>Right to Opt-Out:</strong> We do not sell your personal information.</li>
+      <li><strong>Right to Correction:</strong> You can request correction of inaccurate personal information.</li>
+      <li><strong>Right to Non-Discrimination:</strong> We will not discriminate against you for exercising your privacy rights.</li>
+    </ul>
+    <p>To exercise these rights, contact us at <a href="mailto:privacy@style-tally.com" style="color:var(--accent)">privacy@style-tally.com</a>. We will respond within 45 days of receiving your request.</p>
+
+    <h2>11. European Residents (GDPR)</h2>
+    <p>If you are located in the European Economic Area (EEA), United Kingdom, or Switzerland, you have rights under the General Data Protection Regulation (GDPR):</p>
+    <ul>
+      <li><strong>Right of Access:</strong> You can request a copy of the personal data we hold about you.</li>
+      <li><strong>Right to Rectification:</strong> You can request correction of inaccurate data.</li>
+      <li><strong>Right to Erasure:</strong> You can request deletion of your personal data in certain circumstances.</li>
+      <li><strong>Right to Restrict Processing:</strong> You can request that we limit how we use your data.</li>
+      <li><strong>Right to Data Portability:</strong> You can request your data in a structured, machine-readable format.</li>
+      <li><strong>Right to Object:</strong> You can object to our processing of your personal data in certain situations.</li>
+      <li><strong>Right to Withdraw Consent:</strong> Where we rely on consent, you can withdraw it at any time.</li>
+    </ul>
+    <p>Our legal basis for processing your data includes: consent (for optional features), contract performance (to provide our services), and legitimate interests (to improve our app). To exercise your GDPR rights or lodge a complaint with your local data protection authority, contact us at <a href="mailto:privacy@style-tally.com" style="color:var(--accent)">privacy@style-tally.com</a>.</p>
+
+    <h2>12. Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:privacy@style-tally.com" style="color:var(--accent)">privacy@style-tally.com</a>.</p>
+  </div>
+  <footer>
+    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:32px">
+      <div class="footer-copy">© 2025 StyleTally. All rights reserved.</div>
+      <div style="display:flex;gap:24px">
+        <a href="#" onclick="showPage('home')" style="color:rgba(247,244,239,0.4);font-size:13px;text-decoration:none">Home</a>
+        <a href="#" onclick="showPage('terms')" style="color:rgba(247,244,239,0.4);font-size:13px;text-decoration:none">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!--  TERMS OF SERVICE PAGE                 -->
+<!-- ═══════════════════════════════════════ -->
+<div id="page-terms" class="page">
+  <div class="legal-wrap">
+    <h1>Terms of Service</h1>
+    <div class="legal-date">Last updated: January 2025</div>
+
+    <p>Please read these Terms of Service carefully before using StyleTally. By downloading or using the app, you agree to be bound by these terms.</p>
+
+    <h2>1. Acceptance of Terms</h2>
+    <p>By accessing or using StyleTally, you confirm that you are at least 13 years old and agree to these Terms of Service and our Privacy Policy. If you do not agree, please do not use the app.</p>
+
+    <h2>2. Description of Service</h2>
+    <p>StyleTally is a fashion and style education app that provides AI-powered outfit analysis, colour analysis, daily fashion flashcards, and personalised style advice. Features vary between the free and Pro tiers.</p>
+
+    <h2>3. Subscriptions and Billing</h2>
+    <p>StyleTally offers a free tier and a Pro subscription available as a monthly or annual plan.</p>
+    <ul>
+      <li><strong>Free trial:</strong> New Pro subscribers receive a 3-day free trial. You will not be charged during the trial period.</li>
+      <li><strong>Auto-renewal:</strong> Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current billing period.</li>
+      <li><strong>Cancellation:</strong> You may cancel your subscription at any time through your iPhone Settings → Apple ID → Subscriptions. Cancellation takes effect at the end of the current billing period.</li>
+      <li><strong>Refunds:</strong> Refund requests are handled by Apple in accordance with their refund policy. We do not process refunds directly.</li>
+      <li><strong>Price changes:</strong> We reserve the right to change subscription prices. You will be notified in advance of any price changes.</li>
+    </ul>
+
+    <h2>4. Free Tier Limitations</h2>
+    <p>Free tier users are limited to one outfit analysis and one colour analysis per week. Access to all flashcard scenes, full colour wheel options, and all fashion rules cards requires a Pro subscription.</p>
+
+    <h2>5. User Content</h2>
+    <p>When you upload images for analysis, you grant us a temporary, limited licence to process those images solely for the purpose of providing the analysis service. We do not store your images permanently or use them for any other purpose.</p>
+    <p>You are responsible for ensuring that images you upload do not infringe any third-party rights and comply with applicable laws.</p>
+
+    <h2>6. Acceptable Use</h2>
+    <p>You agree not to:</p>
+    <ul>
+      <li>Use StyleTally for any unlawful purpose</li>
+      <li>Attempt to reverse engineer, hack or disrupt the app or its services</li>
+      <li>Upload content that is offensive, illegal or infringes third-party rights</li>
+      <li>Attempt to circumvent subscription limits or access restrictions</li>
+      <li>Share your account credentials with others</li>
+    </ul>
+
+    <h2>7. AI-Generated Advice</h2>
+    <p>Style analysis and advice provided by StyleTally is generated by artificial intelligence and is intended for entertainment and educational purposes only. It should not be taken as professional fashion, personal styling or any other form of professional advice. Results may vary.</p>
+
+    <h2>8. Intellectual Property</h2>
+    <p>All content within StyleTally, including the app design, flashcard content, AI personality characters, and fashion educational material, is the intellectual property of StyleTally and is protected by applicable copyright and trademark laws. You may not reproduce, distribute or create derivative works without our express written permission.</p>
+
+    <h2>9. Account Termination</h2>
+    <p>We reserve the right to suspend or terminate your account if you violate these Terms of Service. You may delete your account at any time from within the app settings. Upon deletion, all your personal data will be permanently removed within 30 days.</p>
+
+    <h2>10. Disclaimers and Limitation of Liability</h2>
+    <p>StyleTally is provided "as is" without warranties of any kind. We do not guarantee that the service will be uninterrupted, error-free, or that results will be accurate. To the fullest extent permitted by law, StyleTally shall not be liable for any indirect, incidental, or consequential damages arising from your use of the app.</p>
+
+    <h2>11. Changes to Terms</h2>
+    <p>We may update these Terms of Service at any time. We will notify you of material changes by updating the date at the top of this page. Your continued use of StyleTally after changes constitutes acceptance of the revised terms.</p>
+
+    <h2>12. Governing Law</h2>
+    <p>These Terms of Service are governed by the laws of England and Wales. Any disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.</p>
+
+    <h2>13. Contact</h2>
+    <p>For any questions about these terms, contact us at <a href="mailto:legal@style-tally.com" style="color:var(--accent)">legal@style-tally.com</a>.</p>
+  </div>
+  <footer>
+    <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,0.08); padding-top:32px">
+      <div class="footer-copy">© 2025 StyleTally. All rights reserved.</div>
+      <div style="display:flex;gap:24px">
+        <a href="#" onclick="showPage('home')" style="color:rgba(247,244,239,0.4);font-size:13px;text-decoration:none">Home</a>
+        <a href="#" onclick="showPage('privacy')" style="color:rgba(247,244,239,0.4);font-size:13px;text-decoration:none">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Page routing
+  function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
+    document.getElementById('page-' + page).classList.add('active')
+    window.scrollTo(0, 0)
+  }
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible')
+        }, i * 80)
+        observer.unobserve(entry.target)
+      }
+    })
+  }, { threshold: 0.1 })
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el))
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav')
+    if (window.scrollY > 20) {
+      nav.style.boxShadow = '0 1px 0 rgba(0,0,0,0.06)'
+    } else {
+      nav.style.boxShadow = 'none'
+    }
+  })
+</script>
+</body>
+</html>
+
