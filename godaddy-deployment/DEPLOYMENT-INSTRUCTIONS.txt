@@ -1,0 +1,60 @@
+GoDaddy Deployment Instructions for StyleTally
+================================================
+
+FILES TO UPLOAD:
+- index.html
+- favicon.svg
+
+DEPLOYMENT STEPS:
+
+1. Log into your GoDaddy account at https://www.godaddy.com
+
+2. Navigate to your hosting:
+   - Click "Web Hosting" or "Managed WordPress"
+   - Find your hosting account
+   - Click "Manage" or "cPanel Admin"
+
+3. Open File Manager:
+   - In cPanel, look for "File Manager" under "Files" section
+   - Click to open
+
+4. Navigate to public_html:
+   - Find and open the "public_html" folder
+   - This is where your website files go
+
+5. Clear existing files (if any):
+   - Delete any default index.html, index.php, or placeholder files
+   - Keep the .htaccess file if present
+
+6. Upload files:
+   - Click "Upload" button at the top
+   - Select both index.html and favicon.svg from this folder
+   - Wait for upload to complete
+
+7. Set permissions (if needed):
+   - Right-click index.html → Permissions → 644
+   - Right-click favicon.svg → Permissions → 644
+
+8. Test your website:
+   - Visit your domain in a browser
+   - The StyleTally website should now appear
+
+NOTES:
+- Your website is a single-page application (no server required)
+- All styles are embedded in index.html
+- The website works entirely client-side
+- No database or PHP needed
+
+DOMAIN SETUP:
+If your domain isn't already pointing to this hosting:
+1. Go to GoDaddy Domain Settings
+2. Update nameservers to point to your hosting
+3. Allow 24-48 hours for DNS propagation
+
+TROUBLESHOOTING:
+- If you see a blank page, check browser console for errors
+- Make sure index.html is directly in public_html (not in a subfolder)
+- Clear browser cache if changes don't appear
+- Check file permissions are set to 644
+
+Questions? Contact support@style-tally.com
