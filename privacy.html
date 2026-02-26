@@ -158,7 +158,7 @@
 
 <div class="legal-wrap">
   <h1>Privacy Policy</h1>
-  <div class="legal-date">Last updated: January 2025</div>
+  <div class="legal-date">Last updated: February 2026</div>
 
   <p>StyleTally ("StyleTally", "we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use the StyleTally mobile application and related services (collectively, the "Services").</p>
 
@@ -168,7 +168,7 @@
     <li><strong>Account information:</strong> When you sign in with Google or Apple, we receive your name and email address.</li>
     <li><strong>Profile data:</strong> Style preferences, gender category, AI personality selection, and notification settings you provide within the app.</li>
     <li><strong>Usage data:</strong> How often you use features such as outfit analysis and colour analysis, to enforce free tier limits and improve the app.</li>
-    <li><strong>Images:</strong> Photos you upload for outfit or colour analysis. These are processed to generate style feedback and are not stored permanently.</li>
+    <li><strong>Images:</strong> Photos you upload for outfit or colour analysis. These are processed to generate style feedback and are not stored.</li>
     <li><strong>Device data:</strong> Device type, operating system version, and push notification tokens for delivering daily reminders.</li>
     <li><strong>Purchase data:</strong> Subscription status managed via Apple In-App Purchases and RevenueCat. We do not store your payment card details.</li>
   </ul>
@@ -189,8 +189,39 @@
     <li><strong>Supabase:</strong> Our backend database and authentication provider. Data is stored securely on Supabase infrastructure.</li>
     <li><strong>RevenueCat:</strong> Manages subscription purchases and entitlements. RevenueCat processes your Apple ID purchase history to determine your subscription status.</li>
     <li><strong>Google Sign-In / Apple Sign-In:</strong> Used for authentication. We only receive your name and email.</li>
-    <li><strong>OpenAI - Anthropic / AI providers:</strong> Outfit and colour analysis is powered by AI. Images you submit are sent to our AI provider for processing.</li>
+    <li><strong>Google Gemini:</strong> Outfit and colour analysis is powered by Google's Gemini AI. Images you submit are sent to Google Gemini for processing.</li>
   </ul>
+
+  <h2>3.1. AI-Powered Analysis Disclosure</h2>
+  <p>StyleTally uses <strong>Google Gemini</strong>, a third-party artificial intelligence service provided by Google LLC, to power outfit and color analysis features. This section explains what data is collected, how it is used, who it is shared with, and the protections in place.</p>
+  
+  <h3 style="font-family: var(--serif); font-size: 22px; font-weight: 400; margin-top: 24px; margin-bottom: 12px;">Data Collection and Sharing</h3>
+  <p><strong>What data is collected:</strong> When you use the outfit analysis or color analysis feature, StyleTally collects the photo or image you submit through the app.</p>
+  <p><strong>Who the data is sent to:</strong> Your photo is transmitted to Google Gemini (operated by Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA) for AI-powered analysis.</p>
+  <p><strong>Purpose of data collection:</strong> The photo is analyzed by Google Gemini's AI to evaluate your outfit's fit, color harmony, proportions, and styling. The analysis results include a detailed score and personalized fashion recommendations that are returned to you within the app.</p>
+  <p><strong>User consent:</strong> Before your first use of the outfit or color analysis feature, StyleTally will request your explicit permission to share your photo with Google Gemini. You may decline this permission, in which case the analysis feature will not be available. You can modify your preferences at any time within the app settings.</p>
+  
+  <h3 style="font-family: var(--serif); font-size: 22px; font-weight: 400; margin-top: 24px; margin-bottom: 12px;">Data Retention and Security</h3>
+  <p>Images are processed in real-time and are <strong>not stored or retained</strong> by Google Gemini or StyleTally after analysis is complete. Photos are encrypted in transit using industry-standard HTTPS/TLS encryption. No facial recognition technology is used — the AI analyzes only clothing items, colors, fit, and styling elements.</p>
+  
+  <h3 style="font-family: var(--serif); font-size: 22px; font-weight: 400; margin-top: 24px; margin-bottom: 12px;">Third-Party Data Protection</h3>
+  <p>Google LLC, as the operator of Google Gemini, maintains privacy and security standards that meet or exceed industry requirements. Google's handling of your data is governed by:</p>
+  <ul>
+    <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Google Privacy Policy</a></li>
+    <li><a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Google Terms of Service</a></li>
+    <li><a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Google Gemini API Terms of Service</a></li>
+  </ul>
+  <p>Google provides the same or equal level of data protection as outlined in this Privacy Policy. StyleTally does not sell, share, or use your photos for any purpose beyond providing your analysis results. Google Gemini does not use submitted images for training or improving its AI models.</p>
+  
+  <h3 style="font-family: var(--serif); font-size: 22px; font-weight: 400; margin-top: 24px; margin-bottom: 12px;">Your Control and Rights</h3>
+  <p>You maintain full control over your data:</p>
+  <ul>
+    <li>You may choose not to use the analysis feature at any time</li>
+    <li>You can revoke permission for data sharing in the app settings</li>
+    <li>You can delete your account and all associated data at any time from within the app</li>
+    <li>No historical record of analyzed photos is maintained by StyleTally or Google after processing</li>
+  </ul>
+  <p><strong>By using the outfit or color analysis feature and granting permission when prompted, you acknowledge that you have read this disclosure and consent to your photo being transmitted to and processed by Google Gemini in accordance with the terms described above.</strong></p>
 
   <h2>4. Data Storage and Security</h2>
   <p>Your data is stored on secure servers provided by Supabase. We use industry-standard encryption for data in transit and at rest. We retain your data for as long as your account is active. You can request deletion of your account and all associated data at any time from within the app.</p>
